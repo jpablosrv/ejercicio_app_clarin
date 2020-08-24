@@ -11,8 +11,6 @@ const AddFavorite = ({item}) => {
 
     const {favs, setFavs} = useContext(MainContext);
 
-    console.log('Favoritos : ', favs);
-
     const [enFavs, setEnFavs ] = useState(false);
 
     useEffect(() => {
@@ -21,7 +19,7 @@ const AddFavorite = ({item}) => {
 
     const setFav = () => {
         if(enFavs) {
-            setFavs([favs.filter( (elemento) => { return elemento.id != item.id })])
+            setFavs(favs.filter( (elemento) => { return elemento.id != item.id }))
         } else {
             setFavs([...favs, item])
         }

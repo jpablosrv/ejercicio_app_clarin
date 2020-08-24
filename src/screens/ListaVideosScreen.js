@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, RefreshControl } from 'react-native';
-import { getHome, getList, getNext } from '../apis/api';
+import { getListById } from '../apis/api';
 import ListaVideosHome from '../components/ListaVideosHome';
 import globalStyles from '../styles/globalStyles';
-import { MainContext } from '../context/MainContext';
 import LoadingSpin from '../components/LoadingSpin';
 
-const HomeScreen = ({navigation}) => {
+const ListaVideosScreen = ({navigation, route}) => {
+    const { idLista } = route.params;
 
     const [pagingData,setPagingData] = useState({page:10, fetching: false, moreItems: true});
     const [isFetching,setPullRefresh] = useState(true);
-    
-    const { videos, setVideos, setFetchingData } = useContext(MainContext)
+    const [videos, setVideos] = useState([]);
+
 
 
     useEffect(() => {
         if(!isFetching)
             return;
         const fetchData = async () => {
-            const { items, moreItems } = await getHome();
+            const {items, moreItems} = await getListById(idLista, 0, 10);
             setVideos(items);
             setPagingData({...pagingData, moreItems});
         } 
@@ -36,25 +36,27 @@ const HomeScreen = ({navigation}) => {
         
         if(!fetching && moreItems) {
             setPagingData({...pagingData, fetching: true});
-            const {items, moreItems } = await getNext(10, page);
+            const {items, moreItems} = await getListById(idLista, page, 10);
             const itemsArray = moreItems ?  items : [ ...items, {id: 'NOMOREITEMS'}];
             setVideos([...videos, ...itemsArray]);
-            setPagingData({...pagingData, fetching: false, page: page + 10, moreItems});
+            setPagingData({...pagingData, fetching: false, page: page + 10, moreItems });
         }
     }
 
     return (
         <View style={globalStyles.container}>
-            <Text>Home Screen</Text>
+            <Text>Listas de Videos</Text>
+            <Text>ID: {idLista}</Text>
             <ListaVideosHome
                 videos={videos}
                 pullRefreshHandler={setPullRefreshHandler}
                 setEndReachedHandler={setEndReachedHandler}
                 isFetching={isFetching}
                 navigation={navigation}
+                moreItems={pagingData.moreItems}
             />
         </View>
     )
 }
 
-export default HomeScreen;
+export default ListaVideosScreen;

@@ -1,7 +1,5 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import {View, Text} from 'react-native';
-
 
 //Navs
 import {NavigationContainer} from '@react-navigation/native';
@@ -13,23 +11,24 @@ import HomeScreen from '../screens/HomeScreen';
 import MenuScreen from '../screens/MenuScreen';
 import PlayScreen from '../screens/PlayScreen';
 import FavsScreen from '../screens/FavsScreen';
+import ListaVideosScreen from '../screens/ListaVideosScreen';
 
 const Tab = createBottomTabNavigator();
 function MainTabNavigator() {
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#94BE20',
-        inactiveTintColor: 'black',
-      }}>
-      <Tab.Screen name="Inicio" component={HomeStackScreen}/>
-      <Tab.Screen name="Favoritos" component={FavsScreen} />
-      <Tab.Screen name="Listas Principales" component={MenuScreen} />
-    </Tab.Navigator>
+    <NavigationContainer>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: '#94BE20',
+          inactiveTintColor: 'black',
+        }}>
+        <Tab.Screen name="Inicio" component={HomeStackScreen}/>
+        <Tab.Screen name="Favoritos" component={FavsStackScreen} />
+        <Tab.Screen name="Listas Principales" component={PlayListStackScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const Stack = createStackNavigator();
 
 //Home Stack
 const HomeStack = createStackNavigator();
@@ -40,38 +39,23 @@ const HomeStackScreen = () => (
   </HomeStack.Navigator>
 );
 
+//Favs Stack
+const FavsStack = createStackNavigator();
+const FavsStackScreen = () => (
+  <FavsStack.Navigator>
+    <FavsStack.Screen name="Favoritos" component={FavsScreen} />
+    <FavsStack.Screen name="PlayVideo" component={PlayScreen} />
+  </FavsStack.Navigator>
+);
 
 //Listas Principales Stack
 const PlayListStack = createStackNavigator();
-const PlayStackScreen = () => (
+const PlayListStackScreen = () => (
   <PlayListStack.Navigator>
-    <PlayListStack.Screen name="Home" component={HomeScreen} />
+    <PlayListStack.Screen name="Menu" component={MenuScreen} />
+    <PlayListStack.Screen name="ListaVideos" component={ListaVideosScreen} />
     <PlayListStack.Screen name="PlayVideo" component={PlayScreen} />
   </PlayListStack.Navigator>
 );
 
-const AppNavigation = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeStack">
-        <Stack.Screen
-          name="HomeStack"
-          component={MainTabNavigator}
-          options={{title: 'Listas de Videos'}}
-        />
-        <Stack.Screen
-          name="Play"
-          component={PlayScreen}
-          options={{title: 'Reproducción de Video'}}
-        />
-        <Stack.Screen
-          name="Menu"
-          component={MenuScreen}
-          options={{title: 'Listas Principales'}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
-export default AppNavigation;
+export default MainTabNavigator;

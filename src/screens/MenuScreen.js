@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Text, View } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
+import globalStyles from '../styles/globalStyles';
+import { MainContext } from '../context/MainContext';
+import { getList } from '../apis/api';
+import ListadosPrincipales from '../components/ListadosPrincipales';
 
-const MenuScreen = () => {
+const MenuScreen = ({navigation}) => {
     const [listasVideos,setListasVideos] = useState({});
     const [isFetching,setPullRefresh] = useState(true);
     
@@ -13,8 +16,8 @@ const MenuScreen = () => {
         if(!isFetching)
             return;
         const fetchData = async () => {
-            const data = await getHome();
-            setVideos(data);
+            const data = await getList();
+            setListas(data);
         } 
 
         fetchData();
@@ -22,15 +25,14 @@ const MenuScreen = () => {
     }, [isFetching])
 
     const setPullRefreshHandler = (val) => {
-        //console.log('Refreshing Pull to refresh');
         setPullRefresh(val)
     }
 
     return (
         <View style={globalStyles.container}>
             <Text>Listas Principales</Text>
-            <ListaVideosHome
-                videos={videos}
+            <ListadosPrincipales
+                items={listas}
                 pullRefreshHandler={setPullRefreshHandler}
                 isFetching={isFetching}
                 navigation={navigation}
