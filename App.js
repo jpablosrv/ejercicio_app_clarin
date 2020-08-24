@@ -6,8 +6,6 @@ import { MainContext } from './src/context/MainContext';
 import { getHome } from './src/apis/api';
 
 
-//const Stack = createStackNavigator();
-
 const App = () => {
 
   const [videos, setVideos] = useState([]);
