@@ -13,6 +13,8 @@ Pasos para correr la APP.
 # Android
 5) En otra consola ejecutar el comando: npx react-native run-android (buidea la app y la corre en el celular o emulador, si es en un emulador, tiene que estar previamente abierto).
 
+6) Opcionalmente, con npm run generar-apk, se genera el apk.
+
 # iOS
 * No olvidar de ejecutar previamente:
 * sudo gem install cocoapods
